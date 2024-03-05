@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\Search\SearchSurroundSpotController;
+// use App\Http\Controllers\API\Search\SearchSurroundSpotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,37 +28,37 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// アカウント系(ログイン・ログアウト・登録)
-Route::prefix('Account')->group(function () {
-    Route::post('/login', OperationController::class);
-    Route::post('/logout', OperationController::class);
-    Route::post('/temporary_registration', OperationController::class);
-    Route::get('/email/verification', OperationController::class);
-    Route::post('/apply_activation', OperationController::class);
-});
+// // アカウント系(ログイン・ログアウト・登録)
+// Route::prefix('Account')->group(function () {
+//     Route::post('/login', OperationController::class);
+//     Route::post('/logout', OperationController::class);
+//     Route::post('/temporary_registration', OperationController::class);
+//     Route::get('/email/verification', OperationController::class);
+//     Route::post('/apply_activation', OperationController::class);
+// });
 
-Route::prefix('search')->group(function () {
-    Route::post('/surrounding_spot/info', OperationController::class);
-    Route::post('/travel_availability/info', OperationController::class);
-    Route::post('/via_spot/info', OperationController::class);
-    Route::post('/review/info', OperationController::class);
-});
+// Route::prefix('search')->group(function () {
+//     Route::post('/surrounding_spot/info', OperationController::class);
+//     Route::post('/travel_availability/info', OperationController::class);
+//     Route::post('/via_spot/info', OperationController::class);
+//     Route::post('/review/info', OperationController::class);
+// });
 
-Route::prefix('user')->group(function (){
-    Route::prefix('history')->group(function () {
-        Route::get('/info', OperationController::class);
-        Route::get('/register', OperationController::class);
-        Route::get('/delete', OperationController::class);
-    });
+// Route::prefix('user')->group(function (){
+//     Route::prefix('history')->group(function () {
+//         Route::get('/info', OperationController::class);
+//         Route::get('/register', OperationController::class);
+//         Route::get('/delete', OperationController::class);
+//     });
 
-    Route::prefix('favorite')->group(function () {
-        Route::get('/info', OperationController::class);
-        Route::get('/register', OperationController::class);
-        Route::get('/delete', OperationController::class);
-    });
+//     Route::prefix('favorite')->group(function () {
+//         Route::get('/info', OperationController::class);
+//         Route::get('/register', OperationController::class);
+//         Route::get('/delete', OperationController::class);
+//     });
 
-    Route::prefix('mypage')->group(function () {
-        Route::get('/info', OperationController::class);
-        Route::get('/update', OperationController::class);
-    });
-});
+//     Route::prefix('mypage')->group(function () {
+//         Route::get('/info', OperationController::class);
+//         Route::get('/update', OperationController::class);
+//     });
+// });
