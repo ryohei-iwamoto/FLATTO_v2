@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-// class User extends Authenticatable
-class User extends Model
+class Favorite extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
-     * モデルに関連付けられているテーブル名
+     * モデルに関連付けられているテーブル名。
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'favorites';
 
     /**
      * テーブルの主キー
@@ -28,15 +24,16 @@ class User extends Model
     protected $primaryKey = 'id';
 
     /**
-     * 代入可能な属性
+     * 代入可能な属性。
      *
      * @var array
      */
     protected $fillable = [
-        'email',
-        'user_name',
-        'password',
-        'icon',
+        'user_id',
+        'name',
+        'url',
+        'start',
+        'end',
         'status',
     ];
 
@@ -48,7 +45,7 @@ class User extends Model
     protected $dateFormat = 'U';
 
     /**
-     * モデルの日付カラム
+     * 日付を扱う属性。
      *
      * @var array
      */
@@ -62,13 +59,10 @@ class User extends Model
     protected $attributes = [
         'status' => 1,
     ];
-
-    /**
-     * 非表示にする属性
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    
+    // ユーザーモデルとのリレーションを定義する場合
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

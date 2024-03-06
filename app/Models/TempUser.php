@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// class User extends Authenticatable
-class User extends Model
+class TempUser extends Model
 {
     use HasFactory, Notifiable;
 
@@ -18,7 +17,7 @@ class User extends Model
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'temp_users';
 
     /**
      * テーブルの主キー
@@ -34,9 +33,8 @@ class User extends Model
      */
     protected $fillable = [
         'email',
-        'user_name',
         'password',
-        'icon',
+        'verify_code',
         'status',
     ];
 
@@ -70,5 +68,6 @@ class User extends Model
      */
     protected $hidden = [
         'password',
+        'verify_code',
     ];
 }

@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-// class User extends Authenticatable
-class User extends Model
+class History extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * モデルに関連付けられているテーブル名
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'histories';
 
     /**
      * テーブルの主キー
@@ -33,10 +29,13 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'email',
-        'user_name',
-        'password',
-        'icon',
+        'user_id',
+        'url',
+        'start',
+        'via',
+        'end',
+        'travel_method',
+        'distance',
         'status',
     ];
 
@@ -62,13 +61,11 @@ class User extends Model
     protected $attributes = [
         'status' => 1,
     ];
-
-    /**
-     * 非表示にする属性
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
-    ];
+    
+    // 他のモデルへのリレーションを定義する場合があります
+    // 例: HistoryモデルがUserモデルに所属している場合
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
