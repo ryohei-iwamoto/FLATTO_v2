@@ -67,13 +67,13 @@ use App\Helpers\GooglePlacesHelper;
 
             <div class="button">
                 <div class="gps_start_point">
-                    @if(!$use_gps)
-                    <button type="button" id="btn_target" class="btn submit_btn btn-outline-danger">
-                        現在地から出発する
-                    </button>
-                    @else
+                    @if($use_gps)
                     <button type="button" id="btn_" class="btn submit_btn btn-outline-danger" onclick="location.href='/'">
                         出発地点を設定する
+                    </button>
+                    @else
+                    <button type="button" id="btn_target" class="btn submit_btn btn-outline-danger">
+                        現在地から出発する
                     </button>
                     @endif
                 </div>
