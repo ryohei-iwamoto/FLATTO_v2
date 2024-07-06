@@ -1,0 +1,263 @@
+/* ページ全体の設定。18:12のグリッドに指定 */
+#page_container {
+    display: grid;
+    grid-template-rows: repeat(18, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+    height: 90vh;
+    padding: 2vw;
+}
+
+
+
+/* 検索項目を入力するところ */
+.via_system{
+    grid-row: 1 / 6;
+    grid-column: 2 / 12;
+}
+
+.via_system form {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.search {
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row;
+    margin: 0.3vw 0 0.8vw;
+    color: #E95B6B;
+}
+
+.search_criteria {
+    margin: 0 1vw 0.5vh 1vw;
+    display: flex;
+    width: 13vw;
+    flex-flow: column;
+}
+
+.input_search_criteria {
+    width: 100%;
+    /* height: 100%; */
+}
+
+.search_criteria input::placeholder {
+    text-align: right;
+    color: #E95B6B;
+}
+/* 
+.select_search_criteria_box {
+    margin-bottom: 0.5vh;
+} */
+
+.checkbox {
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-flow: column;
+}
+
+.checkbox_items {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gps_start_point {
+    margin: 0 1vw;
+}
+
+.btn_clear {
+    margin-right: 1vw;
+}
+
+.submit_btn {
+    border: 1px solid #dc3545;
+}
+
+/* 下部のマップと周辺地域 */
+.decoration {
+    grid-row: 7 / 18;
+    grid-column: 1 / 13;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding-top: 2vh;
+}
+
+.map {
+    grid-column: 5 / 8;
+}
+
+
+@media (max-width: 1400px) {
+    .decoration {
+        grid-row: 6 / 18;
+    }
+
+    .checkbox {
+        display: none;
+    }
+}
+
+@media (max-aspect-ratio: 9 / 10 ) {
+    #page_container{
+        padding-top: 4vh;
+    }
+
+    .search{
+        flex-flow: column;
+        padding-bottom: 1vh;
+    }
+
+    .search_criteria {
+        width: 100%;
+        font-size: 2rem;
+    }
+
+    .search_criteria input,select {
+        width: 100%;
+        height: 4vh;
+    }
+
+    .via_system {
+        grid-row: 1 / 8;
+    }
+
+    .via_system form{
+        display: flex;
+        flex-flow: column;
+    }
+
+    .decoration {
+        grid-row: 10 / 19;
+        margin-top: 2vh;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        flex-flow: column;
+    }
+
+    .suggest_place_box{
+        width: 80%;
+        padding-bottom: 2vh;
+    }
+
+    .suggest_place {
+        max-height: 18vh;
+        min-height: 18vh;
+        width: 100%;
+    }
+
+    .map {
+        width: 80%;
+        margin-bottom: 0.3vh;
+    }
+
+    .map h5{
+        font-size: 2rem;
+    }
+
+    .search_criteria button{
+        padding: 2.5rem;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .button button{
+        padding: 2.5rem;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        margin-top: 1vh;
+        margin-bottom: 2vh;
+    }
+}
+
+@media (max-aspect-ratio: 3 / 5) {
+    .decoration {
+        grid-row: 8 / 19;
+    }
+}
+
+/* @media (max-aspect-ratio: 1 / 2) {
+    .decoration {
+        grid-row: 7 / 19;
+    }
+} */
+
+/* @media (max-aspect-ratio: 5 / 4) {
+    .input_search_criteria{
+        width: auto;
+    }
+    
+    
+    .select_search_criteria_box {
+        width: auto;
+    }
+    
+    .select_search_criteria{
+        width: 15em;
+        margin-bottom: 0.5vh;
+    }
+} */
+
+@media (min-aspect-ratio: 16 / 9) {
+    .decoration {
+        grid-row: 7 / 18;
+    }
+}
+
+@media (min-aspect-ratio: 16 / 8) {
+    .decoration {
+        grid-row: 8 / 18;
+    }
+}
+
+
+
+
+
+
+
+
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    /* display: flex; */
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%; 
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

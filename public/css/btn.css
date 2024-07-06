@@ -1,0 +1,26 @@
+.btn {
+    color: #ffffff;
+    padding: 0em 1em;
+    height: 2.5rem;
+    border-radius: 0.3rem;
+    border: #F56D91;
+    background-color: #F56D91;
+}
+
+.btn:hover {
+    color: #ffffff;
+    outline: none;
+    background-color: #8D8DAA;
+    border: #F56D91;
+}
+
+.detail1 {
+    width: 18vw;
+    text-align: center;
+    margin-right: 1.5vw;
+}
+
+.detail2 {
+    width: 20vw;
+    text-align: center;
+}

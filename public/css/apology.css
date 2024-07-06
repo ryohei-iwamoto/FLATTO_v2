@@ -1,0 +1,11 @@
+.apology {
+    text-align: center;
+    padding-top: 10vh;
+    font-size: 1.5rem;
+}
+
+@media (max-aspect-ratio: 9 / 10 ) {
+    .apology{
+        font-size: 2rem;
+    }
+}

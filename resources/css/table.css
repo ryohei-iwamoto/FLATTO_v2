@@ -1,0 +1,103 @@
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px auto; 
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table td{
+    vertical-align: middle;
+}
+
+.table thead th {
+    background-color: #ececec;
+    border-bottom: solid 0.5px #dee2e6;
+}
+
+.table tbody tr {
+    background-color: #F7F5F2
+}
+
+
+.table tbody tr:last-child td {
+    border-bottom: none; /* 最後の行の下線を消す */
+}
+
+.table th, .table td {
+    padding: 15px;
+    text-align: center;
+}
+
+.table_title {
+    margin-top: 2vh;
+}
+
+.red_word {
+    color: red; 
+    text-align: center;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center; /* 水平方向で中央揃え */
+    align-items: center; /* 垂直方向で中央揃え */
+    height: 100%;
+    margin-top: 20px;
+    margin: 0 3vw;
+}
+
+.means-selector {
+    text-align: left;
+    margin: 20px 3vw 0 3vw;
+}
+
+.means-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px;
+    color: black;
+}
+
+.means-button.active {
+    border-bottom: 3px solid #E95B6B;
+}
+
+.means-line {
+    border-top: 1px solid #000;
+    margin-top: -3px;
+}
+
+.icon-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.delete-text {
+    color: #dc3545;
+    cursor: pointer;
+}
+
+
+@media (max-aspect-ratio: 9 / 10 ) {
+    .phone_hidden {
+        display: none;
+    }
+
+    .table_title {
+        margin-top: 2vh;
+        font-size: 7vw;
+    }
+
+    .table {
+        font-size: 2rem;
+    }
+
+    .means-button {
+        font-size: 3vw;
+    }
+}

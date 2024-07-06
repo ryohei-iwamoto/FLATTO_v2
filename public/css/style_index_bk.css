@@ -1,0 +1,95 @@
+input::placeholder {
+    text-align: right;
+    color: #E95B6B;
+}
+
+#page_container {
+    display: grid;
+    grid-template-rows: repeat(18, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+    width: 100vw;
+    height: 80vh;
+}
+
+.via_system{
+    
+}
+
+
+.suggest_place {
+    text-align: left;
+    width: 45vw;
+    height: 43vh;
+    border: 1px solid #dc3545;
+    border-radius: 7px;
+    overflow-y: scroll;
+    margin-right: 2vw;
+}
+
+.decoration {
+    display: flex;
+    margin: 2vh 2vw;
+}
+
+.submit_btn {
+    border: 1px solid #dc3545;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.3vw 0 0.8vw;
+    color: #E95B6B;
+}
+
+
+.search_criteria {
+    margin: 0 1vw 0.5vh 1vw;
+}
+
+.gps_start_point {
+    margin: 0 1vw;
+}
+
+.rating {
+    font-size: 20px;
+}
+
+.name {
+    font-size: 30px;
+    color: #f0828d;
+}
+
+.vicinity {
+    font-size: 15px;
+}
+
+.suggest_box {
+    display: flex;
+    margin: 1vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail1 {
+    width: 18vw;
+    text-align: center;
+    margin-right: 1.5vw;
+}
+
+.detail2 {
+    width: 20vw;
+    text-align: center;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.8vw 0;
+}
+
+.btn_clear {
+    margin-right: 1vw;
+}

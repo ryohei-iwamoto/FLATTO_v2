@@ -1,0 +1,60 @@
+.body{
+    font-family: "筑紫B丸ゴシック", "ヒラギノ丸ゴ ProN";
+    background-color: #F7F5F2;
+    margin:0;
+    padding:0;
+}
+
+.navbar{
+    padding:0 0.5vw;
+}
+
+.navbar-brand img{
+    width:11vh;
+    margin:0.15vw 0;
+}
+
+.input_form{
+    text-align:center;
+}
+
+select,input{
+    padding: 0rem 0.5em;
+    height: 3rem;
+    /* width: 20rem; */
+    border-radius: 0.3rem;
+    border: 0.3px solid #8D8DAA;
+    background-color: rgba(256, 0, 0, 0.1);
+}
+
+.red_word{
+    color:#f0828d
+}
+
+@media (max-aspect-ratio: 9 / 10 ) {
+    .navbar-brand img{
+        width: 13vh;
+        margin: 1vh 0;
+    }
+
+    .nav-item a{
+        font-size: 2vh;
+    }
+
+    .navbar {
+        padding: 0 1vw;
+    }
+}
+
+@media (max-aspect-ratio: 9 / 10 ) {
+    .navbar-brand img {
+        width: 11vh;
+        font-size: 1.7vh;
+    }
+}
+
+
+
+
+
+

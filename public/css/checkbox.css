@@ -1,0 +1,14 @@
+.btn-danger:checked{
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.check_btn {
+    width: 1.3vw;
+    margin: 0.25vw 0.2vw 0.25vw 1vw;
+    color: #dc3545;
+}
+
+.checkbox {
+    margin-bottom: 0.2vw 0 0.4vw;
+}

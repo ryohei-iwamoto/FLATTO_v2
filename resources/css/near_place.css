@@ -1,0 +1,15 @@
+.name {
+    font-size: 1.5rem;
+    color: #f0828d;
+}
+
+.vicinity {
+    font-size: 15px;
+}
+
+.suggest_box {
+    display: flex;
+    margin: 1vw;
+    justify-content: center;
+    align-items: center;
+}
