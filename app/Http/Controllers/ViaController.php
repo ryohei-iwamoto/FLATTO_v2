@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Services\GetAddress;
+
 class ViaController extends Controller
 {
+    protected $get_address;
+
+    public function __construct(GetAddress $get_address){
+        
+    }
+
     public function via(Request $request){
         $means = $request->input('means');
         $limit = $request->input('limit');
         $origin = $request->input('origin');
-        $keyword_list = $request->input('via_btn');
         $destination = $request->input('destination');
+        $keyword_list = $request->input('via_btn');
+        $keyword = '';
 
         if (strpos($means, ' | ') === true){
             $temp_means = explode(' | ', $means);
@@ -29,6 +38,11 @@ class ViaController extends Controller
             $error_message = "目的地を入力してください";
         }
 
-        return response()->view('apology', ['error_code'=>'400', 'error_message' => $error_message], 400);
+        if ($error_message){
+            return response()->view('apology', ['error_code'=>'400', 'error_message' => $error_message], 400);
+        }
+        
+
+
     }
 }
