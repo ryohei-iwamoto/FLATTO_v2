@@ -26,13 +26,13 @@ class HomeController extends Controller{
         if ($request->isMethod('post')) {
             $user_lat = $request->input('user_lat', 35.0036559);
             $user_long = $request->input('user_long', 135.7785534);
-            $use_gps = 1;
+            $use_gps = true;
         }
 
         if ($request->isMethod('get')) {
             $user_lat = 35.0036559;
             $user_long = 135.7785534;
-            $use_gps = 0;
+            $use_gps = false;
         }
 
         $keyword = "";

@@ -20,7 +20,7 @@ use App\Helpers\GooglePlacesHelper;
                     所要時間
                     <input name="limit" placeholder="分" required class="input_search_criteria" type="number" maxlength="3" min="0" max="999">
                 </div>
-                @if($use_gps != 1)
+                @if(!$use_gps)
                 <div class="search_criteria">
                     出発地点
                     <input name="origin" required class="input_search_criteria" maxlength="30">
@@ -32,7 +32,7 @@ use App\Helpers\GooglePlacesHelper;
                 </div>
                 <div class="search_criteria">
                     移動手段
-                    @if($use_gps == 1)
+                    @if($use_gps)
                     <select aria-label="Default select example" name="means" style="display:inline" required class="select_search_criteria">
                         <option value="driving | {{ $user_lat }},{{ $user_long }}">車</option>
                         <option value="bicycling | {{ $user_lat }},{{ $user_long }}">自転車</option>
@@ -67,7 +67,7 @@ use App\Helpers\GooglePlacesHelper;
 
             <div class="button">
                 <div class="gps_start_point">
-                    @if($use_gps == 0)
+                    @if(!$use_gps)
                     <button type="button" id="btn_target" class="btn submit_btn btn-outline-danger">
                         現在地から出発する
                     </button>
