@@ -83,6 +83,13 @@ use App\Helpers\GooglePlacesHelper;
         </form>
     </div>
 
+    <form action="{{ url('/') }}" method="POST" style="display:none" name="currentlocationsearch">
+        @csrf
+        <input name="user_lat" type="hidden" />
+        <input name="user_long" type="hidden" />
+    </form>
+
+
     <div class="decoration">
         <div class="suggest_place_box">
             <h5 class="red_word">周辺の経由地スポット</h5>

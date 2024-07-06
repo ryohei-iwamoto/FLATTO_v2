@@ -11,8 +11,8 @@ document.getElementById("btn_target").onclick = function(){
     var longitude = position.coords.longitude;
     const form = document.currentlocationsearch;
     console.log(form);
-    form.lat.value = latitude;
-    form.long.value = longitude;
+    form.user_lat.value = latitude;
+    form.user_long.value = longitude;
     form.submit();
   };
 
