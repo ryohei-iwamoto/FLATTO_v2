@@ -94,17 +94,17 @@ use App\Helpers\GooglePlacesHelper;
         <div class="suggest_place_box">
             <h5 class="red_word">周辺の経由地スポット</h5>
             <div class="suggest_place">
-                @foreach($places as $place)
+                @foreach($places_api_data as $places_api_datum)
                 <div class="suggest_box">
                     <div class="detail1">
-                        <span class="star5_rating" data-rate="{{ $place['rating'] }}"></span>
-                        <span>{{ $place['rating'] }}</span><br>
-                        <span class="name">{{ $place['name'] }}</span><br>
+                        <span class="star5_rating" data-rate="{{ $places_api_datum['rating'] }}"></span>
+                        <span>{{ $places_api_datum['rating'] }}</span><br>
+                        <span class="name">{{ $places_api_datum['name'] }}</span><br>
                     </div>
-                    <span><img src="{{ GooglePlacesHelper::generatePhotoUrl($place['photo_reference']) }}" style="width:200px"></span>
+                    <span><img src="{{ GooglePlacesHelper::generatePhotoUrl($places_api_datum['photo_reference']) }}" style="width:200px"></span>
                     <div class="detail2">
-                        <span class="vicinity">{{ $place['vicinity'] }}</span><br>
-                        <button onclick="window.open('https://www.google.com/search?q={{ urlencode($place['name']) }}', '_blank')" class="btn btn-outline-danger">WEBで開く</button>
+                        <span class="vicinity">{{ $places_api_datum['vicinity'] }}</span><br>
+                        <button onclick="window.open('https://www.google.com/search?q={{ urlencode($places_api_datum['name']) }}', '_blank')" class="btn btn-outline-danger">WEBで開く</button>
                     </div>
                 </div>
                 @endforeach

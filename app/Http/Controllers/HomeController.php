@@ -55,9 +55,9 @@ class HomeController extends Controller{
 
 
         // $reformated_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($places_api_raw_json_data);
-        $places = $this->reformatPlacesApiDataService->ReformatPlacesApiData($places_api_raw_json_data);
+        $places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($places_api_raw_json_data);
 
-        return view('home', compact('places',
+        return view('home', compact('places_api_data',
                                     'use_gps',
                                     'user_lat',
                                     'user_long'));
