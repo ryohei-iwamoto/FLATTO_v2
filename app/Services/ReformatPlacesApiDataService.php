@@ -10,9 +10,8 @@ class ReformatPlacesApiDataService{
         $results = [];
         $suggestedPlaces = [];
 
-        Log::debug($placesApiRawJsonData);
+        // Log::debug($placesApiRawJsonData);
 
-        // 実行結果を保存
         foreach ($placesApiRawJsonData['results'] as $placeResult) {
             if (!in_array('political', $placeResult['types'])) {
                 $results[] = $placeResult;
