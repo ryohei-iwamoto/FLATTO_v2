@@ -22,11 +22,10 @@ class HomeController extends Controller{
         $this->reformatPlacesApiDataService = $ReformatPlacesApiDataService;
     }
 
-    //ホーム画面を表示するためのコントローラ
     public function index(Request $request){
         if ($request->isMethod('post')) {
-            $user_lat = $request->input('lat', 35.0036559);
-            $user_long = $request->input('long', 135.7785534);
+            $user_lat = $request->input('user_lat', 35.0036559);
+            $user_long = $request->input('user_long', 135.7785534);
             $use_gps = 1;
         }
 
