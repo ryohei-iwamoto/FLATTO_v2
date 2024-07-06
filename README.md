@@ -34,7 +34,11 @@ cp .env.example .env
 最初のセットアップ時、または `docker-compose.yml` が更新された場合に Docker コンテナをビルドします。
 
 ```bash
+composer install
+npm install
+yaml install
 ./vendor/bin/sail build
+# sudo apt-get install docker-ce docker-ce-cli containerd.io
 ```
 
 ### 4. Laravel Sailの起動
