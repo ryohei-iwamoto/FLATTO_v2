@@ -50,18 +50,18 @@ use App\Helpers\GooglePlacesHelper;
 
             <div class="checkbox">
                 <div class="checkbox_items">
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(1)" id="btn" name="via_btn" value="restaurant">レストラン</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(2)" id="btn" name="via_btn" value="pharmacy">薬局</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(3)" id="btn" name="via_btn" value="hotel">バー</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(4)" id="btn" name="via_btn" value="station">駅</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(5)" id="btn" name="via_btn" value="amusement park">遊園地</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(6)" id="btn" name="via_btn" value="Tourist attractions">観光スポット</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(1)" id="btn" name="via_btn[]" value="restaurant">レストラン</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(2)" id="btn" name="via_btn[]" value="pharmacy">薬局</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(3)" id="btn" name="via_btn[]" value="hotel">バー</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(4)" id="btn" name="via_btn[]" value="station">駅</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(5)" id="btn" name="via_btn[]" value="amusement park">遊園地</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(6)" id="btn" name="via_btn[]" value="Tourist attractions">観光スポット</label>
                 </div>
                 <div class="checkbox_items">
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(7)" id="btn" name="via_btn" value="museum">美術館、博物館</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(8)" id="btn" name="via_btn" value="Temple">お寺</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(9)" id="btn" name="via_btn" value="convenience store">コンビニ</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(10)" id="btn" name="via_btn" value="cafe">カフェ</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(7)" id="btn" name="via_btn[]" value="museum">美術館、博物館</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(8)" id="btn" name="via_btn[]" value="Temple">お寺</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(9)" id="btn" name="via_btn[]" value="convenience store">コンビニ</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(10)" id="btn" name="via_btn[]" value="cafe">カフェ</label>
                 </div>
             </div>
 

@@ -3,26 +3,41 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
-use App\Services\GetAddress;
+use App\Services\GetAddressService;
+use App\Services\GetRouteService;
+use App\Services\GeoCalculationService;
+use App\Services\GooglePlacesService;
+use App\Services\ReformatPlacesApiDataService;
+use App\Services\GetPlaceDetailService;
 
-class ViaController extends Controller
-{
-    protected $get_address;
+class ViaController extends Controller {
+    protected $addressService;
+    protected $getRouteService;
+    protected $geoService;
+    protected $placesService;
+    protected $reformatPlacesApiDataService;
+    protected $getPlaceDetailService;
 
-    public function __construct(GetAddress $get_address){
-        
+    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService) {
+        $this->addressService = $addressService;
+        $this->getRouteService = $getRouteService;
+        $this->geoService = $geoService;
+        $this->placesService = $placesService;
+        $this->reformatPlacesApiDataService = $ReformatPlacesApiDataService;
     }
 
-    public function via(Request $request){
+    public function via(Request $request) {
         $means = $request->input('means');
         $limit = $request->input('limit');
         $origin = $request->input('origin');
         $destination = $request->input('destination');
-        $keyword_list = $request->input('via_btn');
+        $keyword_list = $request->input('via_btn', []);
         $keyword = '';
+        $error_message = '';
 
-        if (strpos($means, ' | ') === true){
+        if (strpos($means, ' | ') === true) {
             $temp_means = explode(' | ', $means);
             $means = $temp_means[0];
             $origin = $temp_means[1];
@@ -38,11 +53,117 @@ class ViaController extends Controller
             $error_message = "目的地を入力してください";
         }
 
-        if ($error_message){
-            return response()->view('apology', ['error_code'=>'400', 'error_message' => $error_message], 400);
+        if ($error_message) {
+            return response()->view('apology', ['error_code' => '400', 'error_message' => $error_message], 400);
         }
-        
 
+        foreach ($keyword_list as $value) {
+            $keyword .= "|" . $value;
+        }
+        $keyword = substr($keyword, 1);
 
+        $original_cie = $this->addressService->GetAddress($origin);
+        $destination_cie = $this->addressService->GetAddress($destination);
+
+        $error_message = '';
+
+        if (!$original_cie) {
+            $error_message = "出発地点の住所が見つかりませんでした。\n渋谷区 代々木 参宮橋 まいばすけっとのように特定しやすくするか、\n駅など他の場所を入力してください";
+        }
+
+        if (!$destination_cie) {
+            $error_message = "目的地の住所が見つかりませんでした。\n渋谷区 代々木 参宮橋 まいばすけっとのように特定しやすくするか、\n駅など他の場所を入力してください";
+        }
+
+        if ($error_message) {
+            return response()->view('apology', ['error_code' => '501', 'error_message' => $error_message], 501);
+        }
+
+        $original_lat = $original_cie['results'][0]['geometry']['location']['lat'];
+        $original_long = $original_cie['results'][0]['geometry']['location']['lng'];
+        $destination_lat = $destination_cie['results'][0]['geometry']['location']['lat'];
+        $destination_long = $destination_cie['results'][0]['geometry']['location']['lng'];
+
+        $directions = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means);
+        $direction_time = $directions['routes'][0]['legs'][0]['duration']['value'];
+
+        if ($directions['status'] == "ZERO_RESULTS") {
+            return response()->view('apology', ['error_code' => '501', 'error_message' => "経路が見つかりませんでした。"], 501);
+        }
+
+        if ($direction_time > $limit * 60) {
+            return response()->view('apology', ['error_code' => '501', 'error_message' => "入力した時間では目的地に到着できません"], 400);
+        }
+
+        $via_limit = ($limit - ($direction_time / 60));
+
+        $calc_via_center = $this->geoService->calculateViaCenter(
+            $original_lat,
+            $original_long,
+            $destination_lat,
+            $destination_long,
+            $means,
+            $via_limit
+        );
+
+        $via_places_api_raw_json_data = $this->placesService->searchNearbyPlaces(
+            $calc_via_center['lat'],
+            $calc_via_center['lng'],
+            $calc_via_center['radius'],
+            $keyword
+        );
+
+        $reformated_via_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_places_api_raw_json_data);
+
+        $n = 0;
+        while ($n != 10) {
+            try {
+                $via_place = array_rand($reformated_via_places_api_data);
+            } catch (\Exception $e) {
+                return response()->view('apology', ['error_code' => '400', 'error_message' => "経由地スポットが見つかりませんでした...所要時間を増やしてみてください"], 400);
+            }
+
+            $via_route = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means, $via_place);
+
+            if (!($via_route['results'] == 'ZERO_RESULTS') && $via_limit * 70 >= $via_route['routes'][0]['legs'][0]['duration']['value']) {
+                $add_route_data =  [
+                    'add_distance' => $directions['routes'][0]['legs'][0]['distance'],
+                    'add_duration' => $directions['routes'][0]['legs'][0]['duration']
+                ];
+
+                foreach ($add_route_data as $key => $value) {
+                    $via_place[$key] = $value;
+                }
+
+                break;
+            }else{
+                $key = array_search($via_route, $reformated_via_places_api_data);
+                unset($reformated_via_places_api_data[$key]);
+                }
+            $n += 1;
+        }
+
+        if ($n == 10){
+            return response()->view('apology',  ['error_code' => '501', 'error_message' => "時間内にいける経由地スポットが見つかりませんでした。所要時間を変更するか、目的地を変更してください。"], 501);
+        }
+
+        $via_place_lat = $via_place['results'][0]['geometry']['location']['lat'];
+        $via_place_long = $via_place['results'][0]['geometry']['location']['lng'];
+
+        $calc_via_candidates_center = $this->geoService->calculateViaCenter(
+            $via_place_lat,
+            $via_place_long,
+            $via_place_lat,
+            $via_place_long,
+            $means,
+            15
+        );
+
+        $via_candidates_places_api_raw_json_data = $this->placesService->searchNearbyPlaces(
+            $calc_via_candidates_center['lat'],
+            $calc_via_candidates_center['lng'],
+            $calc_via_candidates_center['radius'],
+            ""
+        );
     }
 }
