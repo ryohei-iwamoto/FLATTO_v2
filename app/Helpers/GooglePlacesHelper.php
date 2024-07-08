@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Log;
+
 class GooglePlacesHelper
 {
     /**
@@ -17,7 +19,8 @@ class GooglePlacesHelper
         }
 
         $apiKey = config('myapp.google_maps_api_key');
-        // return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}";
-        return asset('img/map_logo.jpg');
+        Log::info("https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}");
+        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}";
+        // return asset('img/map_logo.jpg');
     }
 }

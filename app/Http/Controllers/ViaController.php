@@ -19,13 +19,16 @@ class ViaController extends Controller {
     protected $placesService;
     protected $reformatPlacesApiDataService;
     protected $getPlaceDetailService;
+    protected $APIKey;
 
-    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService) {
+    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService, GetPlaceDetailService $getPlaceDetailService) {
         $this->addressService = $addressService;
         $this->getRouteService = $getRouteService;
         $this->geoService = $geoService;
         $this->placesService = $placesService;
         $this->reformatPlacesApiDataService = $ReformatPlacesApiDataService;
+        $this->getPlaceDetailService = $getPlaceDetailService;
+        $this->APIKey = config('myapp.google_maps_api_key');
     }
 
     public function via(Request $request) {
@@ -118,14 +121,15 @@ class ViaController extends Controller {
         $n = 0;
         while ($n != 10) {
             try {
-                $via_place = array_rand($reformated_via_places_api_data);
+                $randomKey = array_rand($reformated_via_places_api_data);
+                $via_place = $reformated_via_places_api_data[$randomKey];
             } catch (\Exception $e) {
                 return response()->view('apology', ['error_code' => '400', 'error_message' => "経由地スポットが見つかりませんでした...所要時間を増やしてみてください"], 400);
             }
 
             $via_route = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means, $via_place);
 
-            if (!($via_route['results'] == 'ZERO_RESULTS') && $via_limit * 70 >= $via_route['routes'][0]['legs'][0]['duration']['value']) {
+            if (!($via_route['status'] == 'ZERO_RESULTS') && $via_limit * 70 >= $via_route['routes'][0]['legs'][0]['duration']['value']) {
                 $add_route_data =  [
                     'add_distance' => $directions['routes'][0]['legs'][0]['distance'],
                     'add_duration' => $directions['routes'][0]['legs'][0]['duration']
@@ -147,8 +151,10 @@ class ViaController extends Controller {
             return response()->view('apology',  ['error_code' => '501', 'error_message' => "時間内にいける経由地スポットが見つかりませんでした。所要時間を変更するか、目的地を変更してください。"], 501);
         }
 
-        $via_place_lat = $via_place['results'][0]['geometry']['location']['lat'];
-        $via_place_long = $via_place['results'][0]['geometry']['location']['lng'];
+        Log::info($via_place);
+
+        $via_place_lat = $via_place['lat'];
+        $via_place_long = $via_place['lng'];
 
         $calc_via_candidates_center = $this->geoService->calculateViaCenter(
             $via_place_lat,
@@ -165,5 +171,36 @@ class ViaController extends Controller {
             $calc_via_candidates_center['radius'],
             ""
         );
+
+        $reformated_via_candidates_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_candidates_places_api_raw_json_data);
+
+        $url = ("https://www.google.com/maps/dir/?api=1&origin=".(string)$original_lat.",".(string)$original_long."&destination=".(string)$destination_lat.",".(string)$destination_long."&travelmode=". $means ."&waypoints=".(string)$via_place_lat.",".(string)$via_place_long);
+        $session_id = 0;
+        $favorite = 0;
+        $rate = $this->getPlaceDetailService->GetPlaceDetail($via_place['place_id']);
+
+        $mapURL = "https://www.google.com/maps/embed/v1/directions?key={$this->APIKey}"
+        . "&origin={$original_lat},{$original_long}"
+        . "&destination={$destination_lat},{$destination_long}"
+        . "&mode={$means}"
+        . "&waypoints={$via_place['lat']},{$via_place['lng']}";
+
+        Log::info($via_candidates_places_api_raw_json_data);
+
+
+        return view('via', compact('via_place',
+                                    'url',
+                                    'means',
+                                    'favorite',
+                                    'destination',
+                                    'session_id',
+                                    'original_lat',
+                                    'mapURL',
+                                    'original_long',
+                                    'destination_lat',
+                                    'destination_long',
+                                    'rate',
+                                    'reformated_via_candidates_places_api_data',
+                                    'origin'));
     }
 }

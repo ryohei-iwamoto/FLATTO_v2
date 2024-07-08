@@ -18,11 +18,21 @@ class GetPlaceDetailService{
         $geocode_api_response = Http::get($request_url, [
             'place_id'   =>  $place_id,
             'key' => $this->APIKey,
-            'language'  =>  'jp',
+            'language'  =>  'ja',
             'region' => 'jp'
         ]);
 
-        return $geocode_api_response->json();
+        $response_data = json_decode($geocode_api_response->body(), true);
+
+        // エラーチェックとデータ処理
+        if (isset($response_data['error_message'])) {
+            Log::error('Google Places API error', ['error' => $response_data['error_message']]);
+            return 'no_review';
+        } elseif (isset($response_data['result']['reviews'])) {
+            return $response_data['result']['reviews'];
+        }
+
+        return 'no_review';
     }
 
 }

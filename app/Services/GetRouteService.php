@@ -20,23 +20,23 @@ class GetRouteService
 
         if ($via_place) {
             $directions_api_response = Http::get($request_url, [
-                'origin' => str($original_lat) . "," . str($original_long),
-                'destination' => str($destination_lat) . "," . str($destination_long),
-                'waypoints' => str($via_place['lat']) . "," . str($via_place['long']),
+                'origin' => (string)$original_lat . "," . (string)$original_long,
+                'destination' => (string)$destination_lat . "," . (string)$destination_long,
+                'waypoints' => (string)$via_place['lat'] . "," . (string)$via_place['lng'],
                 'departure_time' => 'now',
                 'mode' => $means,
                 'key' => $this->APIKey,
-                'language' => 'jp',
+                'language' => 'ja',
                 'region' => 'jp'
             ]);
         } else {
             $directions_api_response = Http::get($request_url, [
-                'origin' => str($original_lat) . "," . str($original_long),
-                'destination' => str($destination_lat . "," . $destination_long),
+                'origin' => $original_lat . "," . $original_long,
+                'destination' => $destination_lat . "," . $destination_long,
                 'departure_time' => 'now',
                 'mode' => $means,
                 'key' => $this->APIKey,
-                'language' => 'jp',
+                'language' => 'ja',
                 'region' => 'jp'
             ]);
         }

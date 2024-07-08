@@ -9,6 +9,10 @@
     padding:0 0.5vw;
 }
 
+form{
+    margin-block-end:0;
+}
+
 .navbar-brand img{
     width:11vh;
     margin:0.15vw 0;
