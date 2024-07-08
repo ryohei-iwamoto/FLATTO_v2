@@ -12,6 +12,7 @@ use App\Services\GeoCalculationService;
 use App\Services\GooglePlacesService;
 use App\Services\ReformatPlacesApiDataService;
 use App\Services\GetPlaceDetailService;
+use App\Services\SearchViaSpotsService;
 
 use App\Helpers\ErrorHandler;
 
@@ -22,15 +23,17 @@ class ViaController extends Controller {
     protected $placesService;
     protected $reformatPlacesApiDataService;
     protected $getPlaceDetailService;
+    protected $searchViaSpotsService;
     protected $APIKey;
 
-    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService, GetPlaceDetailService $getPlaceDetailService) {
+    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService, GetPlaceDetailService $getPlaceDetailService, SearchViaSpotsService $searchViaSpots) {
         $this->addressService = $addressService;
         $this->getRouteService = $getRouteService;
         $this->geoService = $geoService;
         $this->placesService = $placesService;
         $this->reformatPlacesApiDataService = $ReformatPlacesApiDataService;
         $this->getPlaceDetailService = $getPlaceDetailService;
+        $this->searchViaSpotsService = $searchViaSpots;
         $this->APIKey = config('myapp.google_maps_api_key');
     }
 
@@ -45,11 +48,8 @@ class ViaController extends Controller {
         $use_gps = $request->input('use_gps');
         $keywords = '';
 
+        $keywords = implode("|", $keyword_list);
 
-        foreach ($keyword_list as $keyword) {
-            $keywords .= "|" . $keyword;
-        }
-        $keywords = substr($keywords, 1);
 
         if ($use_gps){
             $original_lat = $user_lat;
@@ -64,6 +64,7 @@ class ViaController extends Controller {
             }
         }
 
+
         $destination_cie = $this->addressService->GetAddress($destination);
 
         if ($destination_cie['status'] == 'ZERO_RESULTS') {
@@ -76,34 +77,28 @@ class ViaController extends Controller {
         $directions = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means);
         
         if ($directions['status'] == "ZERO_RESULTS") {
-            return response()->view('apology', ['error_code' => '501', 'error_message' => "経路が見つかりませんでした。"], 501);
+            return ErrorHandler::createErrorResponse('cannot_travel_in_time', 400);
         }
 
         $direction_time = $directions['routes'][0]['legs'][0]['duration']['value'];
 
         if ($direction_time > $limit * 60) {
-            return response()->view('apology', ['error_code' => '400', 'error_message' => "入力した時間では目的地に到着できません"], 400);
+            return ErrorHandler::createErrorResponse('route_not_found', 501);
         }
+
+
 
         $via_limit = ($limit - ($direction_time / 60));
 
-        $calc_via_center = $this->geoService->calculateViaCenter(
+        $reformated_via_places_api_data = $this->searchViaSpotsService->SearchViaSpots(
             $original_lat,
             $original_long,
             $destination_lat,
             $destination_long,
             $means,
-            $via_limit
-        );
-
-        $via_places_api_raw_json_data = $this->placesService->searchNearbyPlaces(
-            $calc_via_center['lat'],
-            $calc_via_center['lng'],
-            $calc_via_center['radius'],
+            $via_limit,
             $keywords
         );
-
-        $reformated_via_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_places_api_raw_json_data);
 
         $n = 0;
         while ($n != 10) {
@@ -143,23 +138,16 @@ class ViaController extends Controller {
         $via_place_lat = $via_place['lat'];
         $via_place_long = $via_place['lng'];
 
-        $calc_via_candidates_center = $this->geoService->calculateViaCenter(
+        $reformated_via_candidates_places_api_data = $this->searchViaSpotsService->SearchViaSpots(
             $via_place_lat,
             $via_place_long,
             $via_place_lat,
             $via_place_long,
             $means,
-            15
-        );
-
-        $via_candidates_places_api_raw_json_data = $this->placesService->searchNearbyPlaces(
-            $calc_via_candidates_center['lat'],
-            $calc_via_candidates_center['lng'],
-            $calc_via_candidates_center['radius'],
+            15,
             ""
         );
 
-        $reformated_via_candidates_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_candidates_places_api_raw_json_data);
 
         $url = ("https://www.google.com/maps/dir/?api=1&origin=".(string)$original_lat.",".(string)$original_long."&destination=".(string)$destination_lat.",".(string)$destination_long."&travelmode=". $means ."&waypoints=".(string)$via_place_lat.",".(string)$via_place_long);
         $session_id = 0;
@@ -172,7 +160,7 @@ class ViaController extends Controller {
         . "&mode={$means}"
         . "&waypoints={$via_place['lat']},{$via_place['lng']}";
 
-        Log::info($via_candidates_places_api_raw_json_data);
+
 
 
         return view('via', compact('via_place',
