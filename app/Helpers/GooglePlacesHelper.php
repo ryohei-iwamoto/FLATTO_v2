@@ -18,7 +18,7 @@ class GooglePlacesHelper{
 
         $apiKey = config('myapp.google_maps_api_key');
         Log::info("https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}");
-        return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}";
-        // return asset('img/map_logo.jpg');
+        // return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference={$photoReference}&key={$apiKey}";
+        return asset('img/map_logo.jpg');
     }
 }

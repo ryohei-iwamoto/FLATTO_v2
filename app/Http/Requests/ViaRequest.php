@@ -17,9 +17,10 @@ class ViaRequest extends FormRequest
             'means'         => 'required|string',
             'limit'         => 'required|integer',
             'origin'        => 'nullable|string',
-            'user_lat'      => 'nullable|float',
-            'user_long'     => 'nullable|float',
+            'user_lat'      => 'nullable|string',
+            'user_long'     => 'nullable|string',
             'destination'   => 'required|string',
+            'use_gps'       => 'required|boolean',
             'via_btn'       => 'array'
         ];
     }
@@ -31,6 +32,7 @@ class ViaRequest extends FormRequest
             'limit.required'        => '所要時間を入力してください。',
             'origin.required'       => '出発地を入力してください。',
             'destination.required'  => '目的地を入力してください。',
+            'use_gps'               => 'システムエラー(debug:use_gps not defined)'
         ];
     }
 }
