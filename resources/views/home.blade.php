@@ -34,10 +34,12 @@ use App\Helpers\GooglePlacesHelper;
                     移動手段
                     @if($use_gps)
                     <select aria-label="Default select example" name="means" style="display:inline" required class="select_search_criteria">
-                        <option value="driving | {{ $user_lat }},{{ $user_long }}">車</option>
-                        <option value="bicycling | {{ $user_lat }},{{ $user_long }}">自転車</option>
-                        <option value="walking | {{ $user_lat }},{{ $user_long }}">歩き</option>
+                        <option value="driving">車</option>
+                        <option value="bicycling">自転車</option>
+                        <option value="walking">歩き</option>
                     </select>
+                    <input type="hidden" name="user_lat" value="{{ $user_lat }}">
+                    <input type="hidden" name="user_long" value="{{ $user_long }}">
                     @else
                     <select aria-label="Default select example" name="means" style="display:inline" required class="select_search_criteria">
                         <option value="driving">車</option>
@@ -50,18 +52,18 @@ use App\Helpers\GooglePlacesHelper;
 
             <div class="checkbox">
                 <div class="checkbox_items">
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(1)" id="btn" name="via_btn" value="restaurant">レストラン</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(2)" id="btn" name="via_btn" value="pharmacy">薬局</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(3)" id="btn" name="via_btn" value="hotel">バー</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(4)" id="btn" name="via_btn" value="station">駅</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(5)" id="btn" name="via_btn" value="amusement park">遊園地</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(6)" id="btn" name="via_btn" value="Tourist attractions">観光スポット</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(1)" id="btn" name="via_btn[]" value="restaurant">レストラン</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(2)" id="btn" name="via_btn[]" value="pharmacy">薬局</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(3)" id="btn" name="via_btn[]" value="hotel">バー</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(4)" id="btn" name="via_btn[]" value="station">駅</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(5)" id="btn" name="via_btn[]" value="amusement park">遊園地</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(6)" id="btn" name="via_btn[]" value="Tourist attractions">観光スポット</label>
                 </div>
                 <div class="checkbox_items">
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(7)" id="btn" name="via_btn" value="museum">美術館、博物館</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(8)" id="btn" name="via_btn" value="Temple">お寺</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(9)" id="btn" name="via_btn" value="convenience store">コンビニ</label>
-                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(10)" id="btn" name="via_btn" value="cafe">カフェ</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(7)" id="btn" name="via_btn[]" value="museum">美術館、博物館</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(8)" id="btn" name="via_btn[]" value="Temple">お寺</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(9)" id="btn" name="via_btn[]" value="convenience store">コンビニ</label>
+                    <label><input type="checkbox" class="btn btn-outline-danger rounded-pill check_btn btn-danger" onclick="buttonClick(10)" id="btn" name="via_btn[]" value="cafe">カフェ</label>
                 </div>
             </div>
 
@@ -80,6 +82,7 @@ use App\Helpers\GooglePlacesHelper;
                 <button type="button" class="btn submit_btn btn-outline-danger btn_clear" id="target" name="place" onclick="clearFormElements()">クリア</button>
                 <button type="submit" class="btn submit_btn btn-outline-danger search-btn" id="target" name="search_mode" value="normal" onclick="validateFormAndRedirect()">検索</button>
             </div>
+            <input type="hidden" name="use_gps" value="{{ $use_gps }}">
         </form>
     </div>
 
