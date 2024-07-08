@@ -5,20 +5,24 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class GetAddress{
+class GetAddressService{
     protected $APIKey;
 
     public function __construct(){
         $this->APIKey = config('myapp.google_maps_api_key');
     }
 
-    public function get_address($place_name){
+    public function GetAddress($place_name){
         $request_url = "https://maps.googleapis.com/maps/api/geocode/json";
 
-        $params = [
-            'key'       =>  $this->APIKey,
+        $geocode_api_response = Http::get($request_url, [
             'address'   =>  $place_name,
-            'language'  =>  'jp'
-        ];
+            'key' => $this->APIKey,
+            'language'  =>  'jp',
+            'region' => 'jp'
+        ]);
+
+        return $geocode_api_response->json();
     }
+
 }
