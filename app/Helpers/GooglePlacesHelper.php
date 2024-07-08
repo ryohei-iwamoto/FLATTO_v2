@@ -4,16 +4,14 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Log;
 
-class GooglePlacesHelper
-{
+class GooglePlacesHelper{
     /**
      * Generate a URL for Google Places photo
      *
      * @param string|null $photoReference The photo reference from Google Places API
      * @return string URL to the Google Places photo or a default image
      */
-    public static function generatePhotoUrl(?string $photoReference): string
-    {
+    public static function generatePhotoUrl(?string $photoReference): string{
         if (empty($photoReference)) {
             return asset('img/map_logo.jpg');
         }

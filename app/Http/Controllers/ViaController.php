@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ViaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -11,6 +12,8 @@ use App\Services\GeoCalculationService;
 use App\Services\GooglePlacesService;
 use App\Services\ReformatPlacesApiDataService;
 use App\Services\GetPlaceDetailService;
+
+use App\Helpers\ErrorHandler;
 
 class ViaController extends Controller {
     protected $addressService;
@@ -31,71 +34,55 @@ class ViaController extends Controller {
         $this->APIKey = config('myapp.google_maps_api_key');
     }
 
-    public function via(Request $request) {
+    public function via(ViaRequest $request) {
         $means = $request->input('means');
         $limit = $request->input('limit');
         $origin = $request->input('origin');
+        $user_lat = $request->input('user_lat');
+        $user_long = $request->input('user_long');
         $destination = $request->input('destination');
         $keyword_list = $request->input('via_btn', []);
-        $keyword = '';
-        $error_message = '';
+        $use_gps = $request->input('use_gps');
+        $keywords = '';
 
-        if (strpos($means, ' | ') === true) {
-            $temp_means = explode(' | ', $means);
-            $means = $temp_means[0];
-            $origin = $temp_means[1];
+
+        foreach ($keyword_list as $keyword) {
+            $keywords .= "|" . $keyword;
+        }
+        $keywords = substr($keywords, 1);
+
+        if ($use_gps){
+            $original_lat = $user_lat;
+            $original_long = $user_long;
+        }else{
+            $original_cie = $this->addressService->GetAddress($origin);
+            if ($original_cie['status'] == 'ZERO_RESULTS'){
+                return ErrorHandler::createErrorResponse('not_found_start_point_address', 501);
+            }else{
+                $original_lat = $original_cie['results'][0]['geometry']['location']['lat'];
+                $original_long = $original_cie['results'][0]['geometry']['location']['lng'];
+            }
         }
 
-        if (!$means) {
-            $error_message = "移動方法を設定してください";
-        } elseif (!$limit) {
-            $error_message = "所要時間を入力してください";
-        } elseif (!$origin) {
-            $error_message = "出発地を入力してください";
-        } elseif (!$destination) {
-            $error_message = "目的地を入力してください";
-        }
-
-        if ($error_message) {
-            return response()->view('apology', ['error_code' => '400', 'error_message' => $error_message], 400);
-        }
-
-        foreach ($keyword_list as $value) {
-            $keyword .= "|" . $value;
-        }
-        $keyword = substr($keyword, 1);
-
-        $original_cie = $this->addressService->GetAddress($origin);
         $destination_cie = $this->addressService->GetAddress($destination);
 
-        $error_message = '';
-
-        if (!$original_cie) {
-            $error_message = "出発地点の住所が見つかりませんでした。\n渋谷区 代々木 参宮橋 まいばすけっとのように特定しやすくするか、\n駅など他の場所を入力してください";
+        if ($destination_cie['status'] == 'ZERO_RESULTS') {
+            return ErrorHandler::createErrorResponse('not_found_end_point_address', 501);
         }
 
-        if (!$destination_cie) {
-            $error_message = "目的地の住所が見つかりませんでした。\n渋谷区 代々木 参宮橋 まいばすけっとのように特定しやすくするか、\n駅など他の場所を入力してください";
-        }
-
-        if ($error_message) {
-            return response()->view('apology', ['error_code' => '501', 'error_message' => $error_message], 501);
-        }
-
-        $original_lat = $original_cie['results'][0]['geometry']['location']['lat'];
-        $original_long = $original_cie['results'][0]['geometry']['location']['lng'];
         $destination_lat = $destination_cie['results'][0]['geometry']['location']['lat'];
         $destination_long = $destination_cie['results'][0]['geometry']['location']['lng'];
 
         $directions = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means);
-        $direction_time = $directions['routes'][0]['legs'][0]['duration']['value'];
-
+        
         if ($directions['status'] == "ZERO_RESULTS") {
             return response()->view('apology', ['error_code' => '501', 'error_message' => "経路が見つかりませんでした。"], 501);
         }
 
+        $direction_time = $directions['routes'][0]['legs'][0]['duration']['value'];
+
         if ($direction_time > $limit * 60) {
-            return response()->view('apology', ['error_code' => '501', 'error_message' => "入力した時間では目的地に到着できません"], 400);
+            return response()->view('apology', ['error_code' => '400', 'error_message' => "入力した時間では目的地に到着できません"], 400);
         }
 
         $via_limit = ($limit - ($direction_time / 60));
@@ -113,7 +100,7 @@ class ViaController extends Controller {
             $calc_via_center['lat'],
             $calc_via_center['lng'],
             $calc_via_center['radius'],
-            $keyword
+            $keywords
         );
 
         $reformated_via_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_places_api_raw_json_data);

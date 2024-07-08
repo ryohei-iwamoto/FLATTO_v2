@@ -34,10 +34,12 @@ use App\Helpers\GooglePlacesHelper;
                     移動手段
                     @if($use_gps)
                     <select aria-label="Default select example" name="means" style="display:inline" required class="select_search_criteria">
-                        <option value="driving | {{ $user_lat }},{{ $user_long }}">車</option>
-                        <option value="bicycling | {{ $user_lat }},{{ $user_long }}">自転車</option>
-                        <option value="walking | {{ $user_lat }},{{ $user_long }}">歩き</option>
+                        <option value="driving">車</option>
+                        <option value="bicycling">自転車</option>
+                        <option value="walking">歩き</option>
                     </select>
+                    <input type="hidden" name="user_lat" value="{{ $user_lat }}">
+                    <input type="hidden" name="user_long" value="{{ $user_long }}">
                     @else
                     <select aria-label="Default select example" name="means" style="display:inline" required class="select_search_criteria">
                         <option value="driving">車</option>
@@ -80,6 +82,7 @@ use App\Helpers\GooglePlacesHelper;
                 <button type="button" class="btn submit_btn btn-outline-danger btn_clear" id="target" name="place" onclick="clearFormElements()">クリア</button>
                 <button type="submit" class="btn submit_btn btn-outline-danger search-btn" id="target" name="search_mode" value="normal" onclick="validateFormAndRedirect()">検索</button>
             </div>
+            <input type="hidden" name="use_gps" value="{{ $use_gps }}">
         </form>
     </div>
 
