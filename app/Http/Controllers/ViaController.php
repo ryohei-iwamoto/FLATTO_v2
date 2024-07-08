@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 use App\Services\GetAddressService;
 use App\Services\GetRouteService;
-use App\Services\GeoCalculationService;
-use App\Services\GooglePlacesService;
-use App\Services\ReformatPlacesApiDataService;
 use App\Services\GetPlaceDetailService;
 use App\Services\SearchViaSpotsService;
 use App\Services\SearchReachViaSpotService;
