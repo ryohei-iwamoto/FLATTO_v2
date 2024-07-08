@@ -26,14 +26,14 @@ class ViaController extends Controller {
     protected $searchViaSpotsService;
     protected $APIKey;
 
-    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService, GetPlaceDetailService $getPlaceDetailService, SearchViaSpotsService $searchViaSpots) {
+    public function __construct(GetAddressService $addressService, GetRouteService $getRouteService, GeoCalculationService $geoService, GooglePlacesService $placesService, ReformatPlacesApiDataService $ReformatPlacesApiDataService, GetPlaceDetailService $getPlaceDetailService, SearchViaSpotsService $searchViaSpotsService) {
         $this->addressService = $addressService;
         $this->getRouteService = $getRouteService;
         $this->geoService = $geoService;
         $this->placesService = $placesService;
         $this->reformatPlacesApiDataService = $ReformatPlacesApiDataService;
         $this->getPlaceDetailService = $getPlaceDetailService;
-        $this->searchViaSpotsService = $searchViaSpots;
+        $this->searchViaSpotsService = $searchViaSpotsService;
         $this->APIKey = config('myapp.google_maps_api_key');
     }
 
@@ -90,7 +90,7 @@ class ViaController extends Controller {
 
         $via_limit = ($limit - ($direction_time / 60));
 
-        $reformated_via_places_api_data = $this->searchViaSpotsService->SearchViaSpots(
+        $reformated_via_places_api_data = $this->searchViaSpotsService->SearchViaSpot(
             $original_lat,
             $original_long,
             $destination_lat,
@@ -133,12 +133,11 @@ class ViaController extends Controller {
             return response()->view('apology',  ['error_code' => '501', 'error_message' => "時間内にいける経由地スポットが見つかりませんでした。所要時間を変更するか、目的地を変更してください。"], 501);
         }
 
-        Log::info($via_place);
 
         $via_place_lat = $via_place['lat'];
         $via_place_long = $via_place['lng'];
 
-        $reformated_via_candidates_places_api_data = $this->searchViaSpotsService->SearchViaSpots(
+        $reformated_via_candidates_places_api_data = $this->searchViaSpotsService->SearchViaSpot(
             $via_place_lat,
             $via_place_long,
             $via_place_lat,

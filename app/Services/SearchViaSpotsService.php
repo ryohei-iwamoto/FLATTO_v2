@@ -8,7 +8,7 @@ use App\Services\GeoCalculationService;
 use App\Services\GooglePlacesService;
 use App\Services\ReformatPlacesApiDataService;
 
-class SearchReachViaSpot{
+class SearchViaSpotsService{
     protected $geoCalcService;
     protected $placesService;
     protected $reformatPlacesApiDataService;
@@ -38,6 +38,6 @@ class SearchReachViaSpot{
 
         $reformated_via_places_api_data = $this->reformatPlacesApiDataService->ReformatPlacesApiData($via_places_api_raw_json_data);
 
-        return $reformated_via_places_api_data
+        return $reformated_via_places_api_data;
     }
 }
