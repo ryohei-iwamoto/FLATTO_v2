@@ -29,6 +29,14 @@ class GetRouteService
                 'language' => 'ja',
                 'region' => 'jp'
             ]);
+
+            $add_route_data =  [
+                'add_distance' => $directions_api_response['routes'][0]['legs'][0]['distance'],
+                'add_duration' => $directions_api_response['routes'][0]['legs'][0]['duration']
+            ];
+            foreach ($add_route_data as $key => $value) {
+                $directions_api_json_response[$key] = $value;
+            }
         } else {
             $directions_api_response = Http::get($request_url, [
                 'origin' => $original_lat . "," . $original_long,
@@ -39,8 +47,9 @@ class GetRouteService
                 'language' => 'ja',
                 'region' => 'jp'
             ]);
+            $directions_api_json_response = $directions_api_response->json();
         }
 
-        return $directions_api_response->json();
+        return $directions_api_json_response;
     }
 }
