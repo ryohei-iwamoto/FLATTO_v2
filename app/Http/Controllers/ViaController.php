@@ -94,7 +94,6 @@ class ViaController extends Controller
             $keywords
         );
 
-
         $via_place = $this->searchReachViaSpotService->searchReachVia(
             $reformated_via_places_api_data,
             $original_lat,
