@@ -110,13 +110,13 @@ use App\Helpers\GooglePlacesHelper;
                             <form method="POST" action="/change_via">
                                 @csrf
                                 <input type="hidden" name="via_place" value="{{ @json_encode($via_place) }}">
-                                <input type="hidden" name="original_lat" value="{{ original_lat }}">
-                                <input type="hidden" name="original_long" value="{{ original_long }}">
-                                <input type="hidden" name="destination_lat" value="{{ destination_lat }}">
-                                <input type="hidden" name="destination_long" value="{{ destination_long }}">
-                                <input type="hidden" name="means" value="{{ means }}">
-                                <input type="hidden" name="origin" value="{{ origin }}">
-                                <input type="hidden" name="destination" value="{{ destination }}">
+                                <input type="hidden" name="original_lat" value="{{ $original_lat }}">
+                                <input type="hidden" name="original_long" value="{{ $original_long }}">
+                                <input type="hidden" name="destination_lat" value="{{ $destination_lat }}">
+                                <input type="hidden" name="destination_long" value="{{ $destination_long }}">
+                                <input type="hidden" name="means" value="{{ $means }}">
+                                <input type="hidden" name="origin" value="{{ $origin }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
                                 <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">経由地を変更する</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEBで開く</button>
@@ -128,13 +128,13 @@ use App\Helpers\GooglePlacesHelper;
                             <form method="POST" action="/change_via">
                                 @csrf
                                 <input type="hidden" name="via_place" value="{{ @json_encode($via_place) }}">
-                                <input type="hidden" name="original_lat" value="{{ original_lat }}">
-                                <input type="hidden" name="original_long" value="{{ original_long }}">
-                                <input type="hidden" name="destination_lat" value="{{ destination_lat }}">
-                                <input type="hidden" name="destination_long" value="{{ destination_long }}">
-                                <input type="hidden" name="means" value="{{ means }}">
-                                <input type="hidden" name="origin" value="{{ origin }}">
-                                <input type="hidden" name="destination" value="{{ destination }}">
+                                <input type="hidden" name="original_lat" value="{{ $original_lat }}">
+                                <input type="hidden" name="original_long" value="{{ $original_long }}">
+                                <input type="hidden" name="destination_lat" value="{{ $destination_lat }}">
+                                <input type="hidden" name="destination_long" value="{{ $destination_long }}">
+                                <input type="hidden" name="means" value="{{ $means }}">
+                                <input type="hidden" name="origin" value="{{ $origin }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
                                 <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">変更</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEB</button>

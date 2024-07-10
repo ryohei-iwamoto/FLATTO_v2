@@ -43,18 +43,7 @@ class GetRouteService
 
         $directions_api_json_response = $directions_api_response->json();
 
-        if ($directions_api_json_response['status'] == 'ZERO_RESULTS'){
-            return False;
-        }else{
-            $add_route_data =  [
-                'add_distance' => $directions_api_json_response['routes'][0]['legs'][0]['distance'],
-                'add_duration' => $directions_api_json_response['routes'][0]['legs'][0]['duration']
-            ];
-            foreach ($add_route_data as $key => $value) {
-                $directions_api_json_response[$key] = $value;
-            }
-    
-            return $directions_api_json_response;
-        }
+
+        return $directions_api_json_response;
     }
 }

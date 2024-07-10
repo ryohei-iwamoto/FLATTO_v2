@@ -36,11 +36,19 @@ class SearchReachViaSpotService
 
             $via_route = $this->getRouteService->GetRoute($original_lat, $original_long, $destination_lat, $destination_long, $means, $via_place);
 
-            if ($via_route && $via_limit * 70 >= $via_route['routes'][0]['legs'][0]['duration']['value']) {
-                Log::info($via_route);
-                return $via_route;
+            if (!($via_route['status'] == 'ZERO_RESULTS') && $via_limit * 70 >= $via_route['routes'][0]['legs'][0]['duration']['value']) {
+                $add_route_data =  [
+                    'add_distance' => $directions['routes'][0]['legs'][0]['distance'],
+                    'add_duration' => $directions['routes'][0]['legs'][0]['duration']
+                ];
+
+                foreach ($add_route_data as $key => $value) {
+                    $via_place[$key] = $value;
+                }
+
+                return $via_place;
             } else {
-                $key = array_search($via_place, $reformated_via_places_api_data);
+                $key = array_search($via_route, $reformated_via_places_api_data);
                 unset($reformated_via_places_api_data[$key]);
             }
         }
