@@ -119,9 +119,13 @@ class ViaController extends Controller
         );
 
         $url = ("https://www.google.com/maps/dir/?api=1&origin=" . (string)$original_lat . "," . (string)$original_long . "&destination=" . (string)$destination_lat . "," . (string)$destination_long . "&travelmode=" . $means . "&waypoints=" . (string)$via_place_lat . "," . (string)$via_place_long);
+
+        $rate = $this->getPlaceDetailService->GetPlaceDetail($via_place['place_id']);
+
+        //　TODO:ログイン機能実装後、お気に入り機能とセッションの有無を実装する。
         $session_id = 0;
         $favorite = 0;
-        $rate = $this->getPlaceDetailService->GetPlaceDetail($via_place['place_id']);
+
 
         $mapURL = "https://www.google.com/maps/embed/v1/directions?key={$this->APIKey}"
             . "&origin={$original_lat},{$original_long}"

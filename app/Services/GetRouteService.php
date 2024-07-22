@@ -41,9 +41,6 @@ class GetRouteService
             ]);
         }
 
-        $directions_api_json_response = $directions_api_response->json();
-
-
-        return $directions_api_json_response;
+        return $directions_api_response->json();
     }
 }

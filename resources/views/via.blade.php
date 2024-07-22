@@ -80,7 +80,7 @@ use App\Helpers\GooglePlacesHelper;
         </div>
     </div>
     <div class="decoration">
-        <!-- 
+        <!--
     <div class="daimei">
         <span>
             <h5 class="red_word flex-item" style="font-weight:600; margin-right:40vw;">周辺の経由地スポット</h5>
@@ -88,7 +88,7 @@ use App\Helpers\GooglePlacesHelper;
         <span>
             <h5 class="red_word flex-item" style="font-weight:600">MAP</h5>
         </span>
-    </div> 
+    </div>
     -->
         <div class="suggest_place_box">
             <h5 class="red_word">周辺の経由地スポット</h5>
@@ -117,6 +117,7 @@ use App\Helpers\GooglePlacesHelper;
                                 <input type="hidden" name="means" value="{{ $means }}">
                                 <input type="hidden" name="origin" value="{{ $origin }}">
                                 <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="reformated_via_candidates_places_api_data" value="{{ @json_encode($reformated_via_candidates_places_api_data) }}">
                                 <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">経由地を変更する</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEBで開く</button>
@@ -135,6 +136,8 @@ use App\Helpers\GooglePlacesHelper;
                                 <input type="hidden" name="means" value="{{ $means }}">
                                 <input type="hidden" name="origin" value="{{ $origin }}">
                                 <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="reformated_via_candidates_places_api_data" value="{{ @json_encode($reformated_via_candidates_places_api_data) }}">
                                 <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">変更</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEB</button>
