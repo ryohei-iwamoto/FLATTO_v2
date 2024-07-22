@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Log;
 
 class ErrorHandler{
     public static function createErrorResponse($error_code, $status_code){
-        $error_message = trans('message', $error_code);
+        Log::info($error_code);
+        $error_message = trans('message.'. $error_code);
         return response()->view('apology', ['error_code'=>$status_code, 'error_message'=>$error_message]);
     }
 }

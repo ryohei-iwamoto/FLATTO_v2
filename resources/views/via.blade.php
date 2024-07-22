@@ -80,7 +80,7 @@ use App\Helpers\GooglePlacesHelper;
         </div>
     </div>
     <div class="decoration">
-        <!-- 
+        <!--
     <div class="daimei">
         <span>
             <h5 class="red_word flex-item" style="font-weight:600; margin-right:40vw;">周辺の経由地スポット</h5>
@@ -88,7 +88,7 @@ use App\Helpers\GooglePlacesHelper;
         <span>
             <h5 class="red_word flex-item" style="font-weight:600">MAP</h5>
         </span>
-    </div> 
+    </div>
     -->
         <div class="suggest_place_box">
             <h5 class="red_word">周辺の経由地スポット</h5>
@@ -107,9 +107,18 @@ use App\Helpers\GooglePlacesHelper;
                     <div class="detail2 over_1900">
                         <span class="vicinity">{{ $via['vicinity'] }}</span><br>
                         <div class="d-flex justify-content-start centered-buttons">
-                            <form method="POST" action="/next_via">
+                            <form method="POST" action="/change_via">
                                 @csrf
-                                <button type="submit" name="next_via" value="{{ json_encode($via_place) }} _=_ ({{ $original_lat }},{{ $original_long }})_=_({{ $destination_lat }},{{ $destination_long }})_=_{{ $means }}_=_{{ $origin }}_=_{{ $destination }}" class="btn btn-outline-danger change_other_via_btn">経由地を変更する</button>
+                                <input type="hidden" name="via_place" value="{{ @json_encode($via_place) }}">
+                                <input type="hidden" name="original_lat" value="{{ $original_lat }}">
+                                <input type="hidden" name="original_long" value="{{ $original_long }}">
+                                <input type="hidden" name="destination_lat" value="{{ $destination_lat }}">
+                                <input type="hidden" name="destination_long" value="{{ $destination_long }}">
+                                <input type="hidden" name="means" value="{{ $means }}">
+                                <input type="hidden" name="origin" value="{{ $origin }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="reformated_via_candidates_places_api_data" value="{{ @json_encode($reformated_via_candidates_places_api_data) }}">
+                                <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">経由地を変更する</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEBで開く</button>
                         </div>
@@ -117,9 +126,19 @@ use App\Helpers\GooglePlacesHelper;
                     <div class="detail2 above_1900">
                         <span class="vicinity">{{ $via['vicinity'] }}</span><br>
                         <div class="d-flex justify-content-start centered-buttons">
-                            <form method="POST" action="/next_via">
+                            <form method="POST" action="/change_via">
                                 @csrf
-                                <button type="submit" name="next_via" value="{{ @json_encode($via_place) }}_=_({{ $original_lat }},{{ $original_long }})_=_({{ $destination_lat }},{{ $destination_long }})_=_{{ $means }}_=_{{ $origin }}_=_{{ $destination }}" class="btn btn-outline-danger change_other_via_btn">変更</button>
+                                <input type="hidden" name="via_place" value="{{ @json_encode($via_place) }}">
+                                <input type="hidden" name="original_lat" value="{{ $original_lat }}">
+                                <input type="hidden" name="original_long" value="{{ $original_long }}">
+                                <input type="hidden" name="destination_lat" value="{{ $destination_lat }}">
+                                <input type="hidden" name="destination_long" value="{{ $destination_long }}">
+                                <input type="hidden" name="means" value="{{ $means }}">
+                                <input type="hidden" name="origin" value="{{ $origin }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="destination" value="{{ $destination }}">
+                                <input type="hidden" name="reformated_via_candidates_places_api_data" value="{{ @json_encode($reformated_via_candidates_places_api_data) }}">
+                                <button type="submit" name="change_via" class="btn btn-outline-danger change_other_via_btn">変更</button>
                             </form>
                             <button onclick="window.open('https://www.google.com/search?q={{ urlencode($via['name']) }}', '_blank')" class="btn btn-outline-danger other_via_web_btn">WEB</button>
                         </div>
